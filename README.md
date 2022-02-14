@@ -1,22 +1,19 @@
 # Sentiment Analysis (Multi-Layer LSTM)
 
-<div style="background-color: white; text-align: center; margin-bottom: 50px; padding: 20px">
-<img src="assets/deep-lstm.png" />
-<h2><b>Multi-Layer LSTM</b></h2>
-</div>
-<br>
-<div style="background-color: white; text-align: center; margin-bottom: 50px; padding: 20px">
-<img src="assets/many-to-one.png"/>
-<h2><b>Many to One</b></h2>
-</div>
+
 
 
 # Arcitechtures
-In our solution, I've combined both of the above images.
+<img src="assets/many-to-one.png"/>
+
+**Many to One**
+
+In our solution, I've used about structure. The only diffrence is that i have used multiple LSTM layers instead of Single Layer as shown in the graph above
 
 
 # Results
 We got our binary loss down till 5e-3 (0.005)
+
 ![loss-plot](assets/loss-plot.png)
 
 # Demo
