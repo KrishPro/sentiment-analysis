@@ -2,6 +2,7 @@
 Written by KrishPro @ KP
 """
 
+import re
 from torchtext.vocab import vocab as build_vocab, Vocab
 from torchtext.data.utils import get_tokenizer
 from train import D_MODEL, NHEAD, NUM_ENCODER_LAYERS, NUM_DECODER_LAYERS, DIM_FEEDFORWARD, DROPOUT
@@ -22,6 +23,7 @@ def load_vocab(vocab_path: str = "Data/word-count.pth", min_freq: int = 2) -> Vo
 def take_input(tokenizer, vocab, device=None):
     print("Write a review about any movie")
     review = input("=> ").lower().strip()
+    review: str = re.sub(r'[^\w\s]', "", review)
     review: list[str] = tokenizer(review)
     review: list[int] = vocab(review)
     review: torch.Tensor = torch.tensor(review, dtype=torch.long, device=device).unsqueeze(1)
