@@ -82,7 +82,7 @@ class Transformer(nn.Module):
         out: torch.Tensor = self.transformer(x, cls_token, src_key_padding_mask=pad_mask, memory_key_padding_mask=memory_pad_mask)
 
         # Using the output of transformer to classifiy the review
-        out = torch.sigmoid(self.classifier(out.squeeze(0)))
+        out = torch.sigmoid(self.classifier(out.squeeze(0)).squeeze(1))
 
-        return out # out.shape: (N, 1)
+        return out # out.shape: (N)
         
