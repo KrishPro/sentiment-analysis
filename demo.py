@@ -39,6 +39,7 @@ def main():
     transformer = Transformer(D_MODEL, vocab_size, NHEAD, NUM_ENCODER_LAYERS, NUM_DECODER_LAYERS, DIM_FEEDFORWARD, DROPOUT, PAD_IDX)
     transformer = transformer.to(device)
     transformer.load_state_dict(torch.load("Dist/final-version.pth"))
+    transformer.eval()
 
     review = take_input(tokenizer, vocab, device)
     result = transformer(review).item()
