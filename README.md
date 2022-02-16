@@ -22,5 +22,5 @@ EPOCH 10:  84%|████████▍ | 1211/1442 [04:35<00:52,  4.40it/s, 
 Even after running for ~50 mins on Google Colab, It didn't seem to converge so i didn't trainned it any further
 
 ## Demo
-As it didn't produced any results, I didn't made any demo for it
+As it didn't produced any results, I didn't made any demo for it\
 Even, I didn't saved the trainned weights
