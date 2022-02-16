@@ -3,6 +3,7 @@ Written by KrishPro @ KP
 """
 
 from collections import Counter
+import numpy as np
 from torchtext.data.utils import get_tokenizer
 from torchtext.vocab import Vocab, vocab as build_vocab
 from torch.nn.utils.rnn import pad_sequence
@@ -24,6 +25,8 @@ class Dataset(data.Dataset):
         self.tokenizer = get_tokenizer("spacy", language="en_core_web_sm")
 
         df: pd.DataFrame = self.load_data(self.tokenizer)
+
+        df['text'] = df['text'].map(lambda t: ["[CLS]"] + t)
 
         self.vocab = self.create_vocab(df['text'], min_freq=2)
         
