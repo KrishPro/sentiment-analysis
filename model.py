@@ -4,11 +4,11 @@ Written by KrishPro @ KP
 
 from transformers import DistilBertConfig
 from transformers.models.distilbert.modeling_distilbert import DistilBertModel, BaseModelOutput
-import pytorch_lightning as pl
+from pytorch_lightning import LightningModule
 import torch.nn as nn
 import torch
 
-class Model(pl.LightningModule):
+class Model(LightningModule):
     def __init__(self):
         super(Model, self).__init__()
 
