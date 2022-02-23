@@ -36,7 +36,7 @@ def start_tensorboard(log_dir: str = "/content/drive/MyDrive/Models/sentiment-an
     url = tb.launch()
     print(f"Tensorflow listening on {url}")
 
-    ngrok.connect(6006)
+    print(ngrok.connect(6006))
 
 class TrainModel(Model):
     def __init__(self, learning_rate: float, ultimate_batch_size: int, epochs: int):
