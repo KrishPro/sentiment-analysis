@@ -20,7 +20,7 @@ class TrainModel(Model):
         self.warmup_steps = int(0.1 * self.total_steps)
 
     def configure_optimizers(self):
-        optimizer = optim.AdamW(self.parameters(), lr=self.learning_rate, weight_decay=1e-5)
+        optimizer = optim.AdamW(self.parameters(), lr=self.learning_rate, weight_decay=1e-5, betas=(0.9, 0.98), eps=1e-9)
         scheduler = get_linear_schedule_with_warmup(
             optimizer,
             num_warmup_steps=self.warmup_steps,
