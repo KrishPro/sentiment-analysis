@@ -31,7 +31,7 @@ class TrainModel(Model):
     def training_step(self, batch: tuple[tuple[torch.Tensor, torch.Tensor], torch.Tensor], batch_idx: int):
         (input_ids, attention_mask), label = batch
         preds = self(input_ids, attention_mask)
-        loss = self.criterion(preds, label)
+        loss = self.criterion(preds, torch.abs(label - 0.1))
         self.log("lr", self.optimizers().optimizer.param_groups[0]['lr'], prog_bar=True)
         return loss
     
