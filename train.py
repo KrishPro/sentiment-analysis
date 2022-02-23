@@ -7,6 +7,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from transformers import get_linear_schedule_with_warmup
+from pytorch_lightning.callbacks import LearningRateMonitor
 from data import IMDBDataModule
 from model import Model
 
@@ -19,7 +20,7 @@ class TrainModel(Model):
         self.warmup_steps = int(0.1 * self.total_steps)
 
     def configure_optimizers(self):
-        optimizer = optim.Adam(self.parameters(), lr=self.learning_rate)
+        optimizer = optim.AdamW(self.parameters(), lr=self.learning_rate, weight_decay=1e-5)
         scheduler = get_linear_schedule_with_warmup(
             optimizer,
             num_warmup_steps=self.warmup_steps,
@@ -33,7 +34,6 @@ class TrainModel(Model):
         preds = self(input_ids, attention_mask)
         loss = self.criterion(preds, torch.abs(label - 0.1))
         self.log("train_loss", loss.item(), prog_bar=True)
-        self.log("lr", self.optimizers().optimizer.param_groups[0]['lr'], prog_bar=True)
         return loss
     
 
@@ -52,7 +52,8 @@ class TrainModel(Model):
 
 if __name__ == '__main__':
     # epochs = 50
-    # trainer = Trainer(tpu_cores=8, max_epochs=epochs)
+    # lr_moniter = LearningRateMonitor(logging_interval='step')
+    # trainer = Trainer(tpu_cores=8, max_epochs=epochs, callbacks=[lr_moniter])
     # datamodule = IMDBDataModule(batch_size=16)
     # model = TrainModel(learning_rate=2e-5, ultimate_batch_size=8*16, epochs=epochs)
     # trainer.fit(model, datamodule)
