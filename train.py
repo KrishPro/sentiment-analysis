@@ -11,11 +11,11 @@ from data import IMDBDataModule
 from model import Model
 
 class TrainModel(Model):
-    def __init__(self, learning_rate: float, ultimate_batch_size: int):
+    def __init__(self, learning_rate: float, ultimate_batch_size: int, epochs: int):
         super(TrainModel, self).__init__()
         self.learning_rate = learning_rate
         self.criterion = nn.BCELoss()
-        self.total_steps = 45_000 // ultimate_batch_size
+        self.total_steps = (45_000 // ultimate_batch_size) * epochs
         self.warmup_steps = int(0.1 * self.total_steps)
 
     def configure_optimizers(self):
@@ -51,7 +51,10 @@ class TrainModel(Model):
         return loss
 
 if __name__ == '__main__':
-    datamodule = IMDBDataModule(batch_size=1)
-    trainer = Trainer()
-    model = TrainModel(learning_rate=2e-5, ultimate_batch_size=1)
-    trainer.fit(model, datamodule)
+    # epochs = 50
+    # trainer = Trainer(tpu_cores=8, max_epochs=epochs)
+    # datamodule = IMDBDataModule(batch_size=16)
+    # model = TrainModel(learning_rate=2e-5, ultimate_batch_size=8*16, epochs=epochs)
+    # trainer.fit(model, datamodule)
+
+    pass
