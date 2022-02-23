@@ -14,7 +14,6 @@ class TrainModel(Model):
     def __init__(self, learning_rate: float, ultimate_batch_size: int):
         super(TrainModel, self).__init__()
         self.learning_rate = learning_rate
-        print(self.config)
         self.criterion = nn.BCELoss()
         self.total_steps = 45_000 // ultimate_batch_size
         self.warmup_steps = int(0.1 * self.total_steps)
