@@ -6,7 +6,7 @@ from pytorch_lightning import Trainer
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from transformers import get_linear_schedule_with_warmup
+from transformers.optimization import get_linear_schedule_with_warmup
 from pytorch_lightning.callbacks import LearningRateMonitor
 from data import IMDBDataModule
 from model import Model
