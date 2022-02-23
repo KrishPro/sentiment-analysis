@@ -29,7 +29,7 @@ class Model(LightningModule):
         self.reset_parameters()
         
     def reset_parameters(self):
-        for param in self.parameters():
+        for param in self.classifier.parameters():
             if param.dim() > 1:
                 nn.init.xavier_uniform_(param)
 
