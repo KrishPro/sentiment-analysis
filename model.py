@@ -25,7 +25,14 @@ class Model(LightningModule):
             nn.Linear(self.dim, 1),
             nn.Sigmoid()
         )
+
+        self.reset_parameters()
         
+    def reset_parameters(self):
+        for param in self.parameters():
+            if param.dim() > 1:
+                nn.init.xavier_uniform_(param)
+
     def forward(self, input_ids: torch.Tensor, attention_mask: torch.Tensor):
         
         bert_output: BaseModelOutput = self.model(input_ids, attention_mask)
