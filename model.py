@@ -16,12 +16,9 @@ class Model(LightningModule):
         self.model = DistilBertModel.from_pretrained("distilbert-base-uncased")
 
         self.dim: int = self.config.dim
-        self.dropout: float = self.config.dropout
+        self.dropout: float = 0.5
 
         self.classifier = nn.Sequential(
-            nn.Linear(self.dim, self.dim),
-            nn.GELU(),
-            nn.Dropout(self.dropout),
             nn.Linear(self.dim, self.dim),
             nn.GELU(),
             nn.Dropout(self.dropout),
