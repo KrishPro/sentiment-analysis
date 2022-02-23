@@ -75,6 +75,7 @@ class TrainModel(Model):
         (input_ids, attention_mask), label = batch
         preds = self(input_ids, attention_mask)
         loss = self.criterion(preds, label)
+        self.log("test_loss", loss.item(), prog_bar=True)
         return loss
 
 if __name__ == '__main__':
