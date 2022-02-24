@@ -55,8 +55,8 @@ class TrainModel(Model):
 
     def training_step(self, batch: tuple[tuple[torch.Tensor, torch.Tensor], torch.Tensor], batch_idx: int):
         (input_ids, attention_mask), label = batch
-        preds = self(input_ids, attention_mask)
-        loss = self.criterion(preds, label)
+        preds: torch.Tensor = self(input_ids, attention_mask)
+        loss: torch.Tensor = self.criterion(preds, label)
         self.log("train_loss", loss.item(), prog_bar=True)
         return loss
     
