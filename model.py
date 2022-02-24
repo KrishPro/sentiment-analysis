@@ -19,11 +19,9 @@ class Model(LightningModule):
         self.dropout: float = 0.5
 
         self.classifier = nn.Sequential(
-            nn.Dropout(self.dropout),
-            nn.Linear(self.size, self.size),
             nn.LeakyReLU(),
             nn.Dropout(self.dropout),
-            nn.Linear(self.size, self.size),
+            nn.Linear(self.config.dim, self.size),
             nn.LeakyReLU(),
             nn.Dropout(self.dropout),
             nn.Linear(self.size, 1),
