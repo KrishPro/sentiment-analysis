@@ -49,7 +49,7 @@ class TrainModel(Model):
 
     def configure_optimizers(self):
         optimizer = optim.AdamW(self.parameters(), lr=self.learning_rate, weight_decay=1e-5, betas=(0.9, 0.98), eps=1e-9)
-        scheduler = optim.lr_scheduler.CyclicLR(optimizer, self.base_lr, self.max_lr,  self.step_size)
+        scheduler = optim.lr_scheduler.CyclicLR(optimizer, self.base_lr, self.max_lr,  self.step_size, cycle_momentum=False)
         scheduler = {"scheduler": scheduler, "interval": "step", "frequency": 1}
         return [optimizer], [scheduler]
 
