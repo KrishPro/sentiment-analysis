@@ -39,20 +39,17 @@ def start_tensorboard(log_dir: str = "/content/drive/MyDrive/Models/sentiment-an
     print(ngrok.connect(6006))
 
 class TrainModel(Model):
-    def __init__(self, learning_rate: float, ultimate_batch_size: int, epochs: int):
+    def __init__(self, learning_rate: float, ultimate_batch_size: int):
         super(TrainModel, self).__init__()
         self.learning_rate = learning_rate
-        self.criterion = nn.BCELoss()
-        self.total_steps = (45_000 // ultimate_batch_size) * epochs
-        self.warmup_steps = int(0.1 * self.total_steps)
+        self.criterion = nn.BCEWithLogitsLoss()
+        self.base_lr = 1e-7
+        self.max_lr = 1e-4
+        self.step_size = (45_000 // ultimate_batch_size)
 
     def configure_optimizers(self):
         optimizer = optim.AdamW(self.parameters(), lr=self.learning_rate, weight_decay=1e-5, betas=(0.9, 0.98), eps=1e-9)
-        scheduler = get_linear_schedule_with_warmup(
-            optimizer,
-            num_warmup_steps=self.warmup_steps,
-            num_training_steps=self.total_steps,
-        )
+        scheduler = optim.lr_scheduler.CyclicLR(optimizer, self.base_lr, self.max_lr,  self.step_size)
         scheduler = {"scheduler": scheduler, "interval": "step", "frequency": 1}
         return [optimizer], [scheduler]
 
@@ -83,7 +80,7 @@ if __name__ == '__main__':
     # lr_moniter = LearningRateMonitor(logging_interval='step')
     # trainer = Trainer(tpu_cores=8, max_epochs=epochs, callbacks=[lr_moniter])
     # datamodule = IMDBDataModule(batch_size=16)
-    # model = TrainModel(learning_rate=2e-5, ultimate_batch_size=8*16, epochs=epochs)
+    # model = TrainModel(learning_rate=2e-5, ultimate_batch_size=8*16)
     # trainer.fit(model, datamodule)
 
     pass
