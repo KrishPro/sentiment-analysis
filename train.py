@@ -57,7 +57,9 @@ class TrainModel(Model):
         (input_ids, attention_mask), label = batch
         preds: torch.Tensor = self(input_ids, attention_mask)
         loss: torch.Tensor = self.criterion(preds, label)
-        self.log("train_loss", loss.item(), prog_bar=True)
+        accu: torch.Tensor = self.calulate_accuracy(preds.detach(), label.detach())
+        self.log("train_accu", accu.item(), prog_bar=True)
+        self.log("train_loss", loss.item(), prog_bar=False)
         return loss
     
     def calulate_accuracy(preds: torch.Tensor, label: torch.Tensor) -> torch.Tensor:
@@ -69,7 +71,7 @@ class TrainModel(Model):
         preds: torch.Tensor = self(input_ids, attention_mask)
         loss: torch.Tensor = self.criterion(preds, label)
         accu: torch.Tensor = self.calulate_accuracy(preds.detach(), label.detach())
-        self.log("accuracy", accu.item(), prog_bar=True)
+        self.log("val_accu", accu.item(), prog_bar=True)
         self.log("val_loss", loss.item(), prog_bar=True)
         return loss
 
