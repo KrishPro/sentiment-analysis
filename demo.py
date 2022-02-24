@@ -3,16 +3,9 @@ Written by KrishPro @ KP
 """
 
 from transformers.models.distilbert.tokenization_distilbert_fast import DistilBertTokenizerFast
-
 from train import TrainModel
-
-
 import torch
 
-
-# print(torch.load("lightning_logs/version_2/checkpoints/epoch=5-step=1877.ckpt", map_location="cpu"))
-
-# TrainModel.load_state_dict()
 
 def load_model():
     model: TrainModel = TrainModel(learning_rate=1e-6, ultimate_batch_size=1)
