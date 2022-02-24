@@ -60,18 +60,25 @@ class TrainModel(Model):
         self.log("train_loss", loss.item(), prog_bar=True)
         return loss
     
+    def calulate_accuracy(preds: torch.Tensor, label: torch.Tensor) -> torch.Tensor:
+        preds = (preds > 0.5).float()
+        return ((preds == label).sum() / preds.size(0)) * 100
 
     def validation_step(self, batch: tuple[tuple[torch.Tensor, torch.Tensor], torch.Tensor], batch_idx: int):
         (input_ids, attention_mask), label = batch
-        preds = self(input_ids, attention_mask)
-        loss = self.criterion(preds, label)
+        preds: torch.Tensor = self(input_ids, attention_mask)
+        loss: torch.Tensor = self.criterion(preds, label)
+        accu: torch.Tensor = self.calulate_accuracy(preds.detach(), label.detach())
+        self.log("accuracy", accu.item(), prog_bar=True)
         self.log("val_loss", loss.item(), prog_bar=True)
         return loss
 
     def test_step(self, batch: tuple[tuple[torch.Tensor, torch.Tensor], torch.Tensor], batch_idx: int):
         (input_ids, attention_mask), label = batch
-        preds = self(input_ids, attention_mask)
-        loss = self.criterion(preds, label)
+        preds: torch.Tensor = self(input_ids, attention_mask)
+        loss: torch.Tensor = self.criterion(preds, label)
+        accu: torch.Tensor = self.calulate_accuracy(preds.detach(), label.detach())
+        self.log("accuracy", accu.item(), prog_bar=True)
         self.log("test_loss", loss.item(), prog_bar=True)
         return loss
 
