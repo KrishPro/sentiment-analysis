@@ -80,7 +80,6 @@ class TrainModel(Model):
         preds: torch.Tensor = self(input_ids, attention_mask)
         loss: torch.Tensor = self.criterion(preds, label)
         accu: torch.Tensor = self.calulate_accuracy(preds.detach(), label.detach())
-        self.log("accuracy", accu.item(), prog_bar=True)
         self.log("test_loss", loss.item(), prog_bar=True)
         return loss
 
