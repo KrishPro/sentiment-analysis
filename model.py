@@ -15,15 +15,18 @@ class Model(LightningModule):
         self.config = DistilBertConfig.from_pretrained("distilbert-base-uncased")
         self.model = DistilBertModel.from_pretrained("distilbert-base-uncased")
 
-        self.dim: int = self.config.dim
+        self.size: int = self.config.dim // 4
         self.dropout: float = 0.5
 
         self.classifier = nn.Sequential(
-            nn.Linear(self.dim, self.dim),
-            nn.GELU(),
             nn.Dropout(self.dropout),
-            nn.Linear(self.dim, 1),
-            nn.Sigmoid()
+            nn.Linear(self.size, self.size),
+            nn.LeakyReLU(),
+            nn.Dropout(self.dropout),
+            nn.Linear(self.size, self.size),
+            nn.LeakyReLU(),
+            nn.Dropout(self.dropout),
+            nn.Linear(self.size, 1),
         )
 
         self.reset_parameters()
@@ -38,8 +41,6 @@ class Model(LightningModule):
         bert_output: BaseModelOutput = self.model(input_ids, attention_mask)
        
         cls_token = bert_output.last_hidden_state[:, 0, :]
-
-        assert (cls_token.dim() == 2) and (cls_token.size(1) == self.dim), f"cls_token shape must be ({input_ids.size(0)}, {self.dim}), Got {cls_token.shape}"
 
         output: torch.Tensor = self.classifier(cls_token)
 
