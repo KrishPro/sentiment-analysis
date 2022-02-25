@@ -55,7 +55,7 @@ Classified review as negative, 85.664%
 
 ```
 Write a review about any movie
-=> ----
+=> actors were worse but the movie was great. the ending was bad but the story was awesome
 
 <=== Almost Neutral ===>
 ```
