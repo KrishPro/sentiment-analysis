@@ -24,24 +24,30 @@ def process_review(review: str, tokenizer: DistilBertTokenizerFast):
     tokens: dict[str, torch.Tensor] = tokenizer(review, return_tensors="pt")
     return tokens
 
-def predict():
+if __name__ == "__main__":
     print("Loading Model...")
     model, tokenizer = load_model()
     print("\n")
-    review = take_input()
-    tokens = process_review(review, tokenizer)
-    logit: torch.Tensor = model(**tokens)
-    return torch.sigmoid(logit).item()
+    
+    while True:
+        review = take_input()
+        if review == "<exit>":
+            break
+        tokens = process_review(review, tokenizer)
+        logit: torch.Tensor = model(**tokens)
 
-if __name__ == "__main__":
-    result = predict()
+        result = torch.sigmoid(logit).item()
 
-    if not (0.4 < result < 0.6):
-        sentiment: str = "positive" if result > 0.5 else "negative"
-        confidence: float = result if result > 0.5 else (1 - result)
-        print()
-        print(f"Classified review as {sentiment}, {(confidence*100):.3f}%")
+        if not (0.4 < result < 0.6):
+            sentiment: str = "positive" if result > 0.5 else "negative"
+            confidence: float = result if result > 0.5 else (1 - result)
+            print()
+            print(f"Classified review as {sentiment}, {(confidence*100):.3f}%")
 
-    else:
-        print()
-        print("<=== Almost Neutral ===>")
+        else:
+            print()
+            print("<=== Almost Neutral ===>")
+
+        print("\n")
+        print("------=+=+=+=+=------")
+        print("\n")
